@@ -56,7 +56,7 @@ const Form = ({ form, submitHandler }) => {
   };
 
   const renderTextField = (field) => (
-    <div className="mb-3" key={field.name}>
+    <div className="mb-16" key={field.name}>
       <Input
         type={field.type}
         placeholder={field.placeholder}
@@ -71,7 +71,7 @@ const Form = ({ form, submitHandler }) => {
   );
 
   const renderFileField = (field) => (
-    <div key={field.name} className="mb-3">
+    <div key={field.name} className="mb-16">
       <FileInput
         field={field}
         onChange={onChangeInputHandler}
@@ -81,7 +81,7 @@ const Form = ({ form, submitHandler }) => {
   );
 
   const renderButtonSubmit = (field) => (
-    <div key={field.name} className="mb-3">
+    <div key={field.name} className="mb-16">
       <Button onClick={submitFormHandler} variant={field.variant}>
         {field.text}
       </Button>

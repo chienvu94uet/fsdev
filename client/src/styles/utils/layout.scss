@@ -8,4 +8,8 @@
     @include responsive(desktop) {
         max-width: 1600px;
     }
+
+    @include responsive(laptop) {
+        max-width: 1200px;
+    }
 }
