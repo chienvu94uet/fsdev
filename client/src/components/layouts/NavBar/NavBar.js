@@ -16,6 +16,7 @@ const NavBar = ({ isAuthPage = false }) => {
       type: AUTH.UPDATE_AUTH,
       payload: {
         isLoggedIn: false,
+        userName: "",
       },
     });
     navigate("/");
@@ -38,13 +39,19 @@ const NavBar = ({ isAuthPage = false }) => {
           </ul>
         )}
         {!isAuthPage && isLoggedIn && (
-          <ul>
-            <li>
+          <div className="flex">
+            <div className="mr-16">
+              <Link to="/post/create">Create Post</Link>
+            </div>
+            <div>
+              <div>
+                <a href="true">{state?.auth?.userName}</a>
+              </div>
               <a onClick={logoutHandler} href="true">
                 Logout
               </a>
-            </li>
-          </ul>
+            </div>
+          </div>
         )}
       </div>
     </nav>

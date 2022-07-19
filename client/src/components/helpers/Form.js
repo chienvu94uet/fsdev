@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { getAllErrorsForm, getErrorMessageOnField } from "../../helpers/form";
 import { Button, FileInput, Input } from "../uikits";
+import storage from "../../helpers/firebase";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const Form = ({ form, submitHandler }) => {
   const [data, setData] = useState(() => {
@@ -11,6 +13,7 @@ const Form = ({ form, submitHandler }) => {
 
     return formData;
   });
+  const [file, setFile] = useState("");
 
   const formRules = form.map((f) => ({
     name: f.name,
@@ -32,6 +35,10 @@ const Form = ({ form, submitHandler }) => {
   const onChangeInputHandler = (e) => {
     const { name, value } = e.target;
 
+    if (e.target.type === "file") {
+      setFile(e.target.files[0]);
+    }
+
     setErrorForm({
       ...errorForm,
       [name]: "",
@@ -42,7 +49,30 @@ const Form = ({ form, submitHandler }) => {
     });
   };
 
-  const submitFormHandler = (e) => {
+  const handleUploadImage = () => {
+    return new Promise((resolve, reject) => {
+      const timeStamp = new Date().getTime();
+      const storageRef = ref(
+        storage,
+        `/files/${file.name.split(".")[0]}_${timeStamp}.${
+          file.name.split(".")[1]
+        }`
+      );
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {},
+        (err) => reject(err),
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+            resolve(url);
+          });
+        }
+      );
+    });
+  };
+
+  const submitFormHandler = async (e) => {
     e.preventDefault();
     const allErrorsForm = getAllErrorsForm(formRules, data);
     if (Object.keys(allErrorsForm).length > 0) {
@@ -50,6 +80,8 @@ const Form = ({ form, submitHandler }) => {
       return;
     }
 
+    const imageUploadUrl = await handleUploadImage();
+    debugger;
     delete data.submit;
 
     submitHandler(data);
@@ -63,7 +95,7 @@ const Form = ({ form, submitHandler }) => {
         label={field.label}
         id={field.id}
         name={field.name}
-        value={field.value}
+        value={data[field.name]}
         onBlur={onBlurInputHandler}
         onChange={onChangeInputHandler}
         error={errorForm?.[field.name]}

@@ -13,7 +13,7 @@ class Post {
     }
 
     let isExistPost = false;
-    const { title, description, slug, userId } = req.body;
+    const { title, description, slug, userId, image } = req.body;
 
     try {
       const postInDB = await PostModel.findOne({ slug });
@@ -34,6 +34,7 @@ class Post {
         description,
         slug,
         userId,
+        image,
       });
 
       return res.status(201).json({
@@ -57,7 +58,7 @@ class Post {
     }
 
     let isExistPost = false;
-    const { title, description, slug, userId, postId } = req.body;
+    const { title, description, slug, userId, postId, image } = req.body;
 
     try {
       const postInDB = await PostModel.findOne({ slug });
@@ -78,6 +79,7 @@ class Post {
         description,
         slug,
         userId,
+        image,
       });
 
       return res.status(200).json({

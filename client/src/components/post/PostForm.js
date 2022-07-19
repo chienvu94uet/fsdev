@@ -24,6 +24,7 @@ const PostForm = ({ isUpdate }) => {
   }, []);
 
   const updatePostHandler = async (data) => {
+    debugger;
     data.slug = slugify(data.title);
     data.userId = "62d52bc6c55ce67bdd98f5ee";
     await httpClient.sendRequest(
@@ -57,6 +58,16 @@ const PostForm = ({ isUpdate }) => {
       label: "Description",
       id: "description",
       placeholder: "Enter description",
+      rules: {
+        isRequired: "true",
+      },
+    },
+    {
+      name: "image",
+      nameValidate: "Image",
+      type: "file",
+      label: "Image",
+      id: "image",
       rules: {
         isRequired: "true",
       },

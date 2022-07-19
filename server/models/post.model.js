@@ -13,6 +13,9 @@ var postSchema = new Schema({
     type: String,
     required: true,
   },
+  image: {
+    type: String,
+  },
   userId: {
     type: mongoose.Types.ObjectId,
     ref: "user",

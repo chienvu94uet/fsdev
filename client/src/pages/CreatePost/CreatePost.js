@@ -4,7 +4,7 @@ import "./CreatePost.scss";
 
 const CreatePost = () => {
   return (
-    <div>
+    <div className="container">
       <h1>Create Post</h1>
       <PostForm />
     </div>

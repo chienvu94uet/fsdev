@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
+import PostCard from "../../components/helpers/PostCard/PostCard";
 import useHttpClient from "../../hooks/useHttpClient";
 import "./Home.scss";
 
@@ -19,16 +20,16 @@ const Home = () => {
   if (!listPosts || listPosts.length === 0) return null;
 
   return (
-    <div>
-      {listPosts.map((post) => (
-        <div key={post.id}>
-          <Link to={"/post/" + post.slug}>
-            <h2>{post.title}</h2>
-          </Link>
-          <p>{post.description}</p>
-        </div>
-      ))}
-    </div>
+    <>
+      <Helmet>
+        <title>HomePage | FS Blog</title>
+      </Helmet>
+      <div className="container">
+        {listPosts.map((post) => (
+          <PostCard key={post.id} post={post} />
+        ))}
+      </div>
+    </>
   );
 };
 

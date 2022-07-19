@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import PostCard from "../../components/helpers/PostCard/PostCard";
 import useHttpClient from "../../hooks/useHttpClient";
 import "./Dashboard.scss";
 
@@ -16,19 +16,15 @@ const Dashboard = () => {
       setListPosts(result.data);
     };
     getAllPosts();
-  }, [httpClient]);
+    // eslint-disable-next-line
+  }, []);
 
   if (!listPosts || listPosts.length === 0) return null;
 
   return (
-    <div>
+    <div className="container">
       {listPosts.map((post) => (
-        <div key={post.id}>
-          <Link to={"/post/" + post.slug}>
-            <h2>{post.title}</h2>
-          </Link>
-          <p>{post.description}</p>
-        </div>
+        <PostCard key={post.id} post={post} />
       ))}
     </div>
   );

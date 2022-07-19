@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../hooks/useAppContext";
 import Form from "../../components/helpers/Form";
@@ -7,6 +7,7 @@ import { AUTH } from "../../context/AppAction";
 import "./Login.scss";
 
 const Login = () => {
+  const [errorLogin, setErrorLogin] = useState(null);
   const [, dispatch] = useAppContext();
   const httpClient = useHttpClient();
   const navigate = useNavigate();
@@ -20,6 +21,11 @@ const Login = () => {
         "Content-Type": "application/json",
       }
     );
+
+    if (response.errors) {
+      setErrorLogin(response.errors);
+      return;
+    }
     localStorage.setItem("token", response.data.token);
     dispatch({
       type: AUTH.UPDATE_AUTH,
@@ -63,6 +69,7 @@ const Login = () => {
   ];
   return (
     <div className="login-page">
+      {errorLogin && <p className="error error-block">{errorLogin.msg}</p>}
       <Form submitHandler={loginHandler} form={loginForm} />
     </div>
   );

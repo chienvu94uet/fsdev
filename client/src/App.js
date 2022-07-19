@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { AUTH } from "./context/AppAction";
 import { useAppContext } from "./hooks/useAppContext";
 import { AuthenLayout, DefaultLayout } from "./layouts";
 import {
@@ -11,23 +10,11 @@ import {
   LoginPage,
   RegisterPage,
   DashboardPage,
+  NotFoundPage,
 } from "./pages";
 
 const App = () => {
-  const [state, dispatch] = useAppContext();
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      dispatch({
-        type: AUTH.UPDATE_AUTH,
-        payload: {
-          isLoggedIn: true,
-        },
-      });
-    }
-    // eslint-disable-next-line
-  }, []);
-
+  const [state] = useAppContext();
   const isLoggedIn = state.auth.isLoggedIn;
   let route;
   if (isLoggedIn) {
@@ -40,6 +27,7 @@ const App = () => {
           <Route path="edit/:id" element={<UpdatePostPage />} />
           <Route path=":slug" element={<PostDetailPage />} />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     );
   } else {
@@ -52,6 +40,7 @@ const App = () => {
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </>
     );
   }
