@@ -1,7 +1,7 @@
 const initialState = {
   auth: {
     isLoggedIn: false,
-    username: "",
+    userName: "",
   },
   modal: {
     isShow: false,

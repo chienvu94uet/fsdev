@@ -1,13 +1,18 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../../hooks/useAppContext";
 import Form from "../../components/helpers/Form";
 import useHttpClient from "../../hooks/useHttpClient";
-import './Register.scss';
+import { AUTH } from "../../context/AppAction";
+import "./Register.scss";
 
 const Register = () => {
+  const [, dispatch] = useAppContext();
   const httpClient = useHttpClient();
+  const navigate = useNavigate();
 
   const registerHandler = async (data) => {
-    await httpClient.sendRequest(
+    const response = await httpClient.sendRequest(
       "http://localhost:3002/api/v1/auth/register",
       "POST",
       JSON.stringify(data),
@@ -15,6 +20,15 @@ const Register = () => {
         "Content-Type": "application/json",
       }
     );
+    localStorage.setItem("token", response.data.token);
+    dispatch({
+      type: AUTH.UPDATE_AUTH,
+      payload: {
+        userName: response.data.username,
+        isLoggedIn: true,
+      },
+    });
+    navigate("/dashboard");
   };
 
   const registerForm = [

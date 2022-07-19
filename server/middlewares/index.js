@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 
 module.exports = {
   applyMiddleware: function (app) {
@@ -8,5 +9,6 @@ module.exports = {
         extended: true,
       })
     );
+    app.use(cors());
   },
 };

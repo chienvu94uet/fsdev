@@ -1,13 +1,18 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../../hooks/useAppContext";
 import Form from "../../components/helpers/Form";
 import useHttpClient from "../../hooks/useHttpClient";
-import './Login.scss';
+import { AUTH } from "../../context/AppAction";
+import "./Login.scss";
 
 const Login = () => {
+  const [, dispatch] = useAppContext();
   const httpClient = useHttpClient();
+  const navigate = useNavigate();
 
   const loginHandler = async (data) => {
-    await httpClient.sendRequest(
+    const response = await httpClient.sendRequest(
       "http://localhost:3002/api/v1/auth/login",
       "POST",
       JSON.stringify(data),
@@ -15,6 +20,15 @@ const Login = () => {
         "Content-Type": "application/json",
       }
     );
+    localStorage.setItem("token", response.data.token);
+    dispatch({
+      type: AUTH.UPDATE_AUTH,
+      payload: {
+        userName: response.data.username,
+        isLoggedIn: true,
+      },
+    });
+    navigate("/dashboard");
   };
 
   const loginForm = [
