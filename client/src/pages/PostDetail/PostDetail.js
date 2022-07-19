@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import useHttpClient from "../hooks/useHttpClient";
+import useHttpClient from "../../hooks/useHttpClient";
+import "./PostDetail.scss";
 
 const PostDetail = () => {
   const [post, setPost] = useState({});
-  const { id } = useParams();
+  const { slug } = useParams();
   const httpClient = useHttpClient();
   useEffect(() => {
-    const getAllPosts = async () => {
+    const getPostDetail = async () => {
       const result = await httpClient.sendRequest(
-        `http://localhost:1911/post/${id}`
+        `http://localhost:3002/api/v1/post/${slug}`
       );
-      setPost(result.data[0]);
+      setPost(result.data);
     };
-    getAllPosts();
+    getPostDetail();
     // eslint-disable-next-line
   }, []);
 

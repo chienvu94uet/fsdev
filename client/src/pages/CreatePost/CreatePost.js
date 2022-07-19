@@ -1,5 +1,6 @@
 import React from "react";
-import PostForm from "../components/post/PostForm";
+import PostForm from "../../components/post/PostForm";
+import "./CreatePost.scss";
 
 const CreatePost = () => {
   return (

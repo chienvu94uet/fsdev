@@ -63,6 +63,7 @@ const Form = ({ form, submitHandler }) => {
         label={field.label}
         id={field.id}
         name={field.name}
+        value={field.value}
         onBlur={onBlurInputHandler}
         onChange={onChangeInputHandler}
         error={errorForm?.[field.name]}

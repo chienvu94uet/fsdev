@@ -5,6 +5,7 @@ import { useAppContext } from "./hooks/useAppContext";
 import { AuthenLayout, DefaultLayout } from "./layouts";
 import {
   HomePage,
+  UpdatePostPage,
   CreatePostPage,
   PostDetailPage,
   LoginPage,
@@ -36,7 +37,8 @@ const App = () => {
         <Route path="dashboard" element={<DashboardPage />} />
         <Route path="post">
           <Route path="create" element={<CreatePostPage />} />
-          <Route path=":id" element={<PostDetailPage />} />
+          <Route path="edit/:id" element={<UpdatePostPage />} />
+          <Route path=":slug" element={<PostDetailPage />} />
         </Route>
       </Route>
     );
