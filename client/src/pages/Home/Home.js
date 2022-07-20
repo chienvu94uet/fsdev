@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import PostCard from "../../components/helpers/PostCard/PostCard";
+import TextEditor from "../../components/helpers/TextEditor/TextEditor";
 import useHttpClient from "../../hooks/useHttpClient";
 import "./Home.scss";
 
@@ -15,7 +16,8 @@ const Home = () => {
       setListPosts(result.data);
     };
     getAllPosts();
-  }, [httpClient]);
+    // eslint-disable-next-line
+  }, []);
 
   if (!listPosts || listPosts.length === 0) return null;
 
@@ -24,6 +26,7 @@ const Home = () => {
       <Helmet>
         <title>HomePage | FS Blog</title>
       </Helmet>
+      <TextEditor />
       <div className="container">
         {listPosts.map((post) => (
           <PostCard key={post.id} post={post} />

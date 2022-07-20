@@ -7,11 +7,18 @@ const useHttpClient = () => {
   const sendRequest = useCallback(
     async (url, method = "GET", body = null, headers = {}) => {
       setIsLoading(true);
+      const token = localStorage.getItem("token");
+      // sử dụng "bearer" đó là một quy ước lâu đời
+      // Bearer có thể hiểu là "cấp quyền truy cập cho người mang mã thông báo này".
+      const headersWithToken = {
+        ...headers,
+        Authorization: `Bearer ${token}`,
+      };
       try {
         const response = await fetch(url, {
           method,
           body,
-          headers,
+          headers: headersWithToken,
         });
 
         const responseData = await response.json();

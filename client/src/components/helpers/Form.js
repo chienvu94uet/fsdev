@@ -3,6 +3,7 @@ import { getAllErrorsForm, getErrorMessageOnField } from "../../helpers/form";
 import { Button, FileInput, Input } from "../uikits";
 import storage from "../../helpers/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { slugify } from "../../helpers/string";
 
 const Form = ({ form, submitHandler }) => {
   const [data, setData] = useState(() => {
@@ -37,6 +38,16 @@ const Form = ({ form, submitHandler }) => {
 
     if (e.target.type === "file") {
       setFile(e.target.files[0]);
+      const preview = document.getElementById("preview");
+      // tao 1 url tro toi file object, vi image can href la 1 link
+      preview.src = URL.createObjectURL(e.target.files[0]);
+    }
+
+    let newSlug = "";
+    if (name === "title") {
+      newSlug = slugify(value);
+    } else if (name === "slug") {
+      newSlug = slugify(value);
     }
 
     setErrorForm({
@@ -46,6 +57,7 @@ const Form = ({ form, submitHandler }) => {
     setData({
       ...data,
       [name]: value,
+      slug: newSlug,
     });
   };
 
@@ -79,12 +91,14 @@ const Form = ({ form, submitHandler }) => {
       setErrorForm(allErrorsForm);
       return;
     }
+    const dataForm = { ...data };
 
-    const imageUploadUrl = await handleUploadImage();
-    debugger;
-    delete data.submit;
-
-    submitHandler(data);
+    if (file) {
+      const imageUploadUrl = await handleUploadImage();
+      dataForm.image = imageUploadUrl;
+    }
+    delete dataForm.submit;
+    submitHandler(dataForm);
   };
 
   const renderTextField = (field) => (
@@ -110,6 +124,9 @@ const Form = ({ form, submitHandler }) => {
         onChange={onChangeInputHandler}
         error={errorForm?.[field.name]}
       />
+      {file && (
+        <img id="preview" src="" width="100px" height="100px" alt="preview" />
+      )}
     </div>
   );
 

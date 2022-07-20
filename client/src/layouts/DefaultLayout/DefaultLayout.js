@@ -1,6 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import { NavBar } from "../../components/layouts";
+import { Loader } from "../../components/uikits";
 import "./DefaultLayout.scss";
 
 const DefaultLayout = () => {
@@ -10,6 +11,7 @@ const DefaultLayout = () => {
       <main>
         <Outlet />
       </main>
+      <Loader />
     </>
   );
 };
